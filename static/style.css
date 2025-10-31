@@ -1,0 +1,212 @@
+:root {
+    --bg-color: #1a1a1a;
+    --primary-color: #2a2a2a;
+    --secondary-color: #3a3a3a;
+    --accent-color: #007bff;
+    --text-color: #f0f0f0;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#home-heading {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Home view specific styles */
+#home-view {
+    text-align: center;
+}
+
+#home-view header {
+    margin-bottom: 2rem;
+}
+
+#user-id-display {
+    font-size: 0.8rem;
+    color: #aaa;
+    word-break: break-all;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+/* Toggle Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary-color);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Button Styles */
+button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:disabled {
+    background-color: var(--secondary-color);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.map-btn {
+    background-color: rgba(42, 42, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map-btn.exit {
+    background-color: rgba(220, 53, 69, 0.9);
+}
+
+/* Map View Styles - MODIFIED FOR FULLSCREEN */
+#map-view {
+    /* Take it out of the container's flow and make it fullscreen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+}
+
+#map {
+    /* Grow to fill all available space in the flex container */
+    flex-grow: 1;
+    width: 100%;
+    border-radius: 0; /* No rounded corners on fullscreen */
+    background-color: var(--secondary-color);
+}
+
+.map-controls {
+    /* Overlay controls on the bottom of the map */
+    position: absolute;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001; /* Ensure it's above the map */
+    display: flex;
+    gap: 1rem;
+}
+
+/* Info message for notifications */
+.info-box {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    z-index: 2000;
+    animation: fade-in-out 3s forwards;
+}
+
+@keyframes fade-in-out {
+    0% { opacity: 0; top: 0px; }
+    20% { opacity: 1; top: 20px; }
+    80% { opacity: 1; top: 20px; }
+    100% { opacity: 0; top: 0px; }
+}
+
+/* Utility class */
+.hidden {
+    display: none !important;
+}
+

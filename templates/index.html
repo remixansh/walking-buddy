@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walking Buddy</title>
+    
+    <!-- LeafletJS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Styles for Custom Location Marker -->
+    <style>
+        .location-marker {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+        .location-marker .dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: #0078FF;
+            border-radius: 50%;
+            border: 2px solid white;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .location-marker .wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 120, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+        .location-marker .fov-cone {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 120, 255, 0.3) 0%, rgba(0, 120, 255, 0) 60%);
+            border-radius: 50%;
+            transform-origin: 50% 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            clip-path: polygon(50% 50%, 20% 0, 80% 0);
+            z-index: 0;
+            transition: transform 0.2s linear;
+        }
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <!-- Home View: Initial screen for user interaction -->
+        <section id="home-view" aria-labelledby="home-heading">
+            <header>
+                <h1 id="home-heading">Find a Walking Partner</h1>
+                <p id="user-id-display">Your temporary ID: </p>
+            </header>
+            
+            <div class="controls">
+                <label for="status-toggle" class="switch" aria-label="Go Online/Offline">
+                    <input type="checkbox" id="status-toggle" role="switch" aria-checked="false">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label" aria-hidden="true">Go Online</span>
+            </div>
+            
+            <button id="search-btn" disabled>Find Partner</button>
+        </section>
+
+        <!-- Map View: Hidden by default, shown when a match is found -->
+        <section id="map-view" class="hidden" aria-label="Map of you and your partner">
+            <div id="map"></div>
+            <div class="map-controls">
+                <button id="ring-btn" class="map-btn">Ring Partner</button>
+                <button id="exit-btn" class="map-btn exit">Exit Match</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- LeafletJS Script -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Main Application Script -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
+

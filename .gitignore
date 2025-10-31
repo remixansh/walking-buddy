@@ -1,0 +1,11 @@
+# Environments
+venv/
+
+# Credentials
+serviceAccountKey.json
+
+# IDE / Editor specific
+.vscode/
+
+#Ngrok
+ngrok.exe

@@ -110,7 +110,7 @@ python app.py --host=0.0.0.0
 
 ## 👨‍💻 Author
 
-**Ansh Raja**  
+**Ansh Raj**  
 🎓 B.Tech CSE 
 📍 Delhi, India  
 💬 Passionate about creative digital solutions and community-driven apps  

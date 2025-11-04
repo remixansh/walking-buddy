@@ -80,11 +80,16 @@
             </header>
             
             <div class="controls">
-                <label for="status-toggle" class="switch" aria-label="Go Online/Offline">
-                    <input type="checkbox" id="status-toggle" role="switch" aria-checked="false">
-                    <span class="slider round"></span>
-                </label>
-                <span class="toggle-label" aria-hidden="true">Go Online</span>
+                <input type="checkbox" id="status-toggle" class="visually-hidden" role="switch" aria-checked="false">
+
+                <div class="btn-wrapper">
+                  <label for="status-toggle" class="btn">
+                    <span class="btn-txt btn-txt-off">Offline</span>
+                    <span class="btn-txt btn-txt-on">Online</span>
+                    
+                    <div class="dot pulse"></div>
+                  </label>
+                </div>
             </div>
             
             <button id="search-btn" disabled>Find Partner</button>

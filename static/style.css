@@ -64,58 +64,258 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Toggle Switch Styles */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    margin-right: 10px;
+/* --- New Button Toggle Styles (Replaces old slider) --- */
+
+.btn-wrapper {
+  --width: 200px;
+  --height: 60px;
+  --padding: 8px;
+  --border-radius: 24px;
+  --dot-size: 8px;
+  --btn-color: #e4e4e4;
+  
+  /* Default hue is RED (0deg) for "Offline" */
+  --hue: 0deg; 
+  --animation-duration: 1.2s;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  border: none;
+
+  /* Using your app's secondary color for the wrapper bg */
+  background-color: var(--secondary-color);
+
+  box-shadow:
+    1px 1px 2px 0 #fffd,
+    2px 2px 2px #0001 inset,
+    2px 2px 4px #0001 inset,
+    2px 2px 8px #0001 inset;
+
+  transition: box-shadow 50ms linear;
+  perspective: 150px;
+  perspective-origin: center;
+  user-select: none;
+  z-index: 1;
 }
 
-.switch input {
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.25em;
+  text-align: left;
+  padding: 0 var(--height) 0 calc(var(--padding) * 2);
+
+  transform:scale(0.90);
+  width: calc(90% - 2 * var(--padding));
+  height: calc(100% - 2 * var(--padding));
+  border-radius: calc(var(--border-radius) - var(--padding));
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(#fff2, #0001), var(--btn-color);
+
+  box-shadow:
+    1px 1px 2px -1px #fff inset,
+    0 2px 1px #00000010,
+    0 4px 2px #00000010,
+    0 8px 4px #00000010,
+    0 16px 8px #00000010,
+    0 32px 16px #00000010;
+
+  transition:
+    transform 0.25s cubic-bezier(0.25, 1.5, 0.5, 2.2),
+    box-shadow 0.25s cubic-bezier(0.25, 1.5, 0.5, 1),
+    filter 0.3s cubic-bezier(0.25, 1.5, 0.5, 1);
+  will-change: transform, filter;
+
+  z-index: 2;
+}
+
+.btn-txt {
+  display: inline-block;
+
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Montserrat", "Manrope", sans-serif;
+
+  color: #5550;
+  background-image: linear-gradient(#000a, #555);
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 1px 0px #fff) drop-shadow(0 -1px 0px #0005);
+}
+
+.dot {
+  position: absolute;
+  top: calc(50% - var(--dot-size) / 2);
+  right: calc(var(--height) / 2 - var(--padding) / 2);
+  width: var(--dot-size);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: hsla(var(--hue), 0%, 50%, 0.1);
+
+  border: 1px solid hsla(var(--hue), 0%, 60%, 0.6);
+  box-sizing: border-box;
+
+  box-shadow:
+    1px 1px 2px -1px #fffe inset,
+    0 2px 1px #00000010,
+    0 4px 2px #00000010,
+    0 8px 4px #00000010;
+
+  pointer-events: none;
+  z-index: 3;
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--padding) / -2);
+  left: calc(var(--padding) / -2);
+  width: calc(100% + var(--padding));
+  height: calc(100% + var(--padding));
+  border-radius: inherit;
+  background-color: #0006;
+  mask-image: radial-gradient(circle at 50% 60%, transparent 50%, black);
+}
+
+.dot::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--padding) / -2);
+  left: calc(var(--padding) / -2);
+  width: calc(100% + var(--padding));
+  height: calc(100% + var(--padding));
+  border-radius: inherit;
+  background-color: #0000;
+
+  box-shadow:
+    0 0 10px 2px hsla(var(--hue), 80%, 50%, 0.3),
+    0 0 20px 10px hsla(var(--hue), 80%, 50%, 0.5),
+    0 0 50px 20px hsla(var(--hue), 80%, 50%, 0.5),
+    0 0 16px 1px hsla(var(--hue), 100%, 60%, 0.9) inset;
+
+  opacity: 0;
+}
+
+.pulse {
+  transition: transform 200ms ease-in;
+}
+.pulse.dot {
+  animation: bg-anim var(--animation-duration) ease-in-out infinite;
+}
+.pulse::after {
+  animation: opacity-anim var(--animation-duration) ease-in-out infinite;
+}
+
+@keyframes bg-anim {
+  0%,
+  100% {
+    background-color: hsla(var(--hue), 50%, 50%, 0);
+  }
+  50% {
+    background-color: hsla(var(--hue), 100%, 50%, 1);
+  }
+}
+
+@keyframes opacity-anim {
+  0%,
+  100% {
     opacity: 0;
-    width: 0;
-    height: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--secondary-color);
-    transition: .4s;
+
+.btn:focus-visible .pulse::after {
+  animation: none;
+  opacity: 1;
 }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
+.btn:focus-visible {
+  outline: 2px dashed hsla(var(--hue), 70%, 40%, 1);
+  outline-offset: var(--padding);
 }
 
-input:checked + .slider {
-    background-color: var(--accent-color);
+.btn:active {
+  filter: drop-shadow(
+    var(--padding) 0 var(--padding) hsla(var(--hue), 100%, 50%, 1)
+  );
+  transform: translate3d(0, 0, -4px);
+}
+.btn:active .btn-txt {
+  background-color: hsla(var(--hue), 50%, 50%, 1);
+}
+.btn:active ~ .dot {
+  animation-play-state: paused;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
 }
 
-input:checked + .slider:before {
-    transform: translateX(26px);
+.btn-wrapper:has(.btn:active) {
+  box-shadow:
+    1px 1px 2px 0 #fff,
+    2px 2px 2px #0001 inset,
+    2px 2px 4px #0001 inset,
+    2px 2px 8px #0001 inset,
+    0 0 32px 2px hsla(var(--hue), 50%, 50%, 0.5) inset;
 }
 
-.slider.round {
-    border-radius: 34px;
+
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
-.slider.round:before {
-    border-radius: 50%;
+
+.btn-txt-on {
+  display: none;
 }
+.btn-txt-off {
+  display: inline-block;
+}
+
+
+#status-toggle:checked + .btn-wrapper {
+  /* Change hue to GREEN (142deg) for "Online" */
+  --hue: 142deg;
+}
+
+/* 4. When checked, show "Online" text */
+#status-toggle:checked + .btn-wrapper .btn-txt-on {
+  display: inline-block;
+}
+#status-toggle:checked + .btn-wrapper .btn-txt-off {
+  display: none;
+}
+
+/* 5. When checked, make the pulse solid green */
+#status-toggle:checked + .btn-wrapper .pulse.dot {
+  animation: none; /* Stops the pulse */
+  background-color: hsla(var(--hue), 100%, 50%, 1); /* Solid green */
+}
+
+#status-toggle:checked + .btn-wrapper .pulse::after {
+  animation: none; /* Stops the glow pulse */
+  opacity: 1; /* Solid glow */
+}
+
+/* --- End of New Button Styles --- */
+
 
 /* Button Styles */
 button {
@@ -151,7 +351,7 @@ button:hover:not(:disabled) {
     background-color: rgba(220, 53, 69, 0.9);
 }
 
-/* Map View Styles - MODIFIED FOR FULLSCREEN */
+
 #map-view {
     /* Take it out of the container's flow and make it fullscreen */
     position: fixed;
@@ -209,4 +409,3 @@ button:hover:not(:disabled) {
 .hidden {
     display: none !important;
 }
-
